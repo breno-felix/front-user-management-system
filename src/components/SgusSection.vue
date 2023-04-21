@@ -1,22 +1,25 @@
 <template>
-  <component :is="currentComponent" @component-register-users="componentRegisterUsers"></component>
+  <component :is="currentComponent" @component-register-users="componentRegisterUsers" ></component>
 </template>
 
 <script>
 import SgusSectionListUser from './SgusSectionListUser.vue';
+import {mapGetters, mapMutations} from 'vuex';
 
 export default {
   components: {
     SgusSectionRegisterUser: () => import ('./SgusSectionRegisterUser.vue'),
     SgusSectionListUser
   },
-  props: {
-    currentComponent: String
+  computed: {
+    ...mapGetters({
+      currentComponent: 'getCurrentComponent'
+    })
   },
   methods: {
-    componentRegisterUsers() {
-      this.$emit('component-register-users');
-    }
+    ...mapMutations({
+      componentRegisterUsers: 'setCurrentComponent'
+    })
   }
 }
 </script>

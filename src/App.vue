@@ -1,13 +1,15 @@
 <template>
   <div id="app">
-    <SgusHeader :current-component="currentSectionComponent" @component-list-users="componentListUsers" />
-    <SgusSection :current-component="currentSectionComponent" @component-register-users="componentRegisterUsers"/>
+    <SgusHeader @component-list-users="componentListUsers" />
+    <SgusSection/>
   </div>
 </template>
 
 <script>
-import SgusHeader from './components/SgusHeader.vue'
+import SgusHeader from './components/SgusHeader.vue';
 import SgusSection from './components/SgusSection.vue';
+import {mapGetters, mapMutations} from 'vuex';
+
 
 export default {
   name: 'App',
@@ -15,18 +17,15 @@ export default {
     SgusHeader,
     SgusSection
   },
-  data() {
-    return {
-      currentSectionComponent: 'SgusSectionListUser'
-    }
+  computed: {
+    ...mapGetters({
+      currentComponent: 'getCurrentComponent'
+    })
   },
   methods: {
-    componentRegisterUsers() {
-      this.currentSectionComponent = 'SgusSectionRegisterUser';
-    },
-    componentListUsers() {
-      this.currentSectionComponent = 'SgusSectionListUser';
-    }
+    ...mapMutations({
+      componentListUsers: 'setCurrentComponent'
+    })
   }
 }
 </script>

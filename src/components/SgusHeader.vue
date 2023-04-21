@@ -3,9 +3,11 @@
         <div class="container">
             <nav>
                 <ul>
-                    <li><a href="#">Gerenciamento</a></li>
+                    <li><a href="#" >Gerenciamento</a></li>
                     <li><span>&gt;</span></li>
-                    <li><a href="#">Cadastro</a></li>
+                    <li><a href="#" @click.prevent="$emit('change-component', 'list-users')">Cadastro</a></li>
+                    <li><span>&gt;</span></li>
+                    <li><a href="#" @click.prevent="$emit('change-component', 'register-users')">Novo Cadastro</a></li>
                 </ul>
             </nav>
 

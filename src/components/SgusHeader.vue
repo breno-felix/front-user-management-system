@@ -3,11 +3,12 @@
         <div class="container">
             <nav>
                 <ul>
-                    <li><a href="#" >Gerenciamento</a></li>
+                    <li><a href="#">Gerenciamento</a></li>
                     <li><span>&gt;</span></li>
-                    <li><a href="#" @click.prevent="$emit('component-list-users')">Cadastro</a></li>
-                    <li><span>&gt;</span></li>
-                    <li><a href="#">Novo Cadastro</a></li>
+                    <li :class="{ 'active': isLinkActive('SgusSectionListUser') }"><a href="#"
+                            @click.prevent="$emit('component-list-users')">Cadastro</a></li>
+                    <li v-if="showLink"><span>&gt;</span></li>
+                    <li v-if="showLink" :class="{ 'active': isLinkActive('SgusSectionRegisterUser') }"><a href="#">Novo Cadastro</a></li>
                 </ul>
             </nav>
 
@@ -21,7 +22,28 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            showLink: false
+        }
+    },
+    props: {
+        currentComponent: String
+    },
+    watch: {
+        currentComponent(value) {
+            if (value === 'SgusSectionRegisterUser') {
+                this.showLink = true
+            } else if (value === 'SgusSectionListUser') {
+                this.showLink = false
+            }
+        }
+    },
+    methods: {
+    isLinkActive(route) {
+      return this.currentComponent === route;
+    },
+  },
 }
 </script>
 
@@ -75,11 +97,11 @@ li a {
     color: #71717A;
 }
 
-li:nth-child(3) a {
-    color: blue;
-}
-
 ul {
     gap: 0.555vw
+}
+
+li.active a {
+    color: #4658AC;
 }
 </style>

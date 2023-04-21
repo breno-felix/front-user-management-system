@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <SgusHeader @component-list-users="componentListUsers" />
+    <SgusHeader :current-component="currentSectionComponent" @component-list-users="componentListUsers" />
     <SgusSection :current-component="currentSectionComponent" @component-register-users="componentRegisterUsers"/>
   </div>
 </template>

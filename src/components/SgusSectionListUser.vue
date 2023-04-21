@@ -1,10 +1,11 @@
 <template>
     <section>
+        <h1>Usuários</h1>
         <div class="container">
 
             <div class="row">
                 <h2>Lista de Cadastros</h2>
-                <button class="new-user">Novo Cadastro ＋</button>
+                <button class="new-user" @click.prevent="$emit('component-register-users')">Novo Cadastro ＋</button>
             </div>
 
             <input type="text" id="search" name="search" placeholder="🔎 Pesquisar">
@@ -33,7 +34,7 @@
                             <td><img src="../assets/Lixo.svg" alt="trash"></td>
                         </tr>
                         <tr>
-                            <td>2</td>
+                            <td>6169817c82a3174b4f4f4c2d</td>
                             <td>Maria</td>
                             <td>maria@mail.com</td>
                             <td>user</td>
@@ -43,7 +44,7 @@
                             <td><img src="../assets/Lixo.svg" alt="trash"></td>
                         </tr>
                         <tr>
-                            <td>3</td>
+                            <td>6169817c82a3174b4f4f4c2d</td>
                             <td>José</td>
                             <td>jose@mail.com</td>
                             <td>admin</td>
@@ -74,6 +75,14 @@ export default {
     font-weight: 400;
 }
 
+h1 {
+    padding-left: 80px;
+    margin-top: 50px;
+    margin-bottom: 42px;
+    font-weight: 600;
+    font-size: 32px;
+    line-height: 39px;
+}
 .container {
     width: 88.8vw;
     min-height: 67vh;
@@ -149,7 +158,7 @@ p.counter {
     /* width: 100%; */
 }
 
-.wrap{
+.wrap {
     text-align: center;
 }
 </style>

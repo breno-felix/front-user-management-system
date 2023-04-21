@@ -15,7 +15,7 @@ export default {
   },
   methods: {
     componentRegisterUsers() {
-      this.$emit('change-component', 'register-users');
+      this.$emit('component-register-users');
     }
   }
 }

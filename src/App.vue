@@ -1,7 +1,7 @@
 <template>
   <div id="app">
-    <SgusHeader @change-component="changeComponent" />
-    <SgusSection :current-component="currentSectionComponent" @change-component="changeComponent"/>
+    <SgusHeader @component-list-users="componentListUsers" />
+    <SgusSection :current-component="currentSectionComponent" @component-register-users="componentRegisterUsers"/>
   </div>
 </template>
 
@@ -21,19 +21,11 @@ export default {
     }
   },
   methods: {
-    changeComponent(value) {
-      let component;
-      switch (value) {
-        case 'list-users':
-        default:
-          component = 'SgusSectionListUser';
-          break;
-
-        case 'register-users':
-          component = 'SgusSectionRegisterUser';
-          break;
-      }
-      this.currentSectionComponent = component;
+    componentRegisterUsers() {
+      this.currentSectionComponent = 'SgusSectionRegisterUser';
+    },
+    componentListUsers() {
+      this.currentSectionComponent = 'SgusSectionListUser';
     }
   }
 }

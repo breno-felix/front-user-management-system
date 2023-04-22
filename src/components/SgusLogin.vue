@@ -5,9 +5,9 @@
             <h2> Sistema Gerenciador de Usuários</h2>
             <form @submit.prevent="onSubmit">
                 <label for="email">Usuário:</label>
-                <input type="text" id="email" name="email" v-model="email" required>
+                <input type="text" id="email" name="email" placeholder="user@mail.com" v-model="email" required>
                 <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" v-model="password" required>
+                <input type="password" id="password" name="password" placeholder="********" v-model="password" required>
                 <p class="forgot-password"><a href="#">Esqueceu sua senha?</a></p>
                 <button type="submit">Acessar →</button>
             </form>

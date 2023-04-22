@@ -4,7 +4,7 @@ import jwt from 'jsonwebtoken';
 export default {
     state: {
         token: '',
-        isAuthenticated: !!localStorage.getItem('token'),
+        isAuthenticated: false,
         userRole: null,
         userName: null,
         userEmail: null
@@ -30,6 +30,9 @@ export default {
         SET_TOKEN(state, token) {
             state.token = token;
         },
+        SET_IS_AUTHENTICATED(state, isAuthenticated) {
+            state.isAuthenticated = isAuthenticated;
+        },
         SET_USER_ROLE(state, role) {
             state.userRole = role;
         },
@@ -49,6 +52,8 @@ export default {
                         commit('SET_TOKEN', token)
                         localStorage.setItem('token', token);
 
+                        commit('SET_IS_AUTHENTICATED', true)
+
                         const { role, name, email } = jwt.decode(token)
                         commit('SET_USER_ROLE', role)
                         localStorage.setItem('userRole', role);
@@ -61,12 +66,40 @@ export default {
                         commit('SET_TOKEN', '')
                         localStorage.removeItem('token')
 
-                        commit('SET_USER', null)
-                        localStorage.removeItem('user')
+                        commit('SET_IS_AUTHENTICATED', false)
+
+                        commit('SET_USER_ROLE', null)
+                        localStorage.removeItem('userRole')
+                        commit('SET_USER_NAME', null)
+                        commit('SET_USER_EMAIL', null)
 
                         reject(error)
                     })
             })
         },
+        logout({ commit }) {
+            const token = localStorage.getItem('token')
+            return new Promise((resolve, reject) => {
+                axios.post('http://localhost:3010/auth/logout', null, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                }).then(() => {
+                    commit('SET_TOKEN', '')
+                    localStorage.removeItem('token')
+
+                    commit('SET_IS_AUTHENTICATED', false)
+
+                    commit('SET_USER_ROLE', null)
+                    localStorage.removeItem('userRole')
+                    commit('SET_USER_NAME', null)
+                    commit('SET_USER_EMAIL', null)
+                    resolve()
+                }).catch(error => {
+                    console.log(error)
+                    reject(error)
+                })
+            })
+        }
     }
-};
+}

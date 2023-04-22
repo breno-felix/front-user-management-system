@@ -1,6 +1,6 @@
 <template>
   <div id="app">
-    <SgusHeader @component-list-users="componentListUsers" />
+    <SgusHeader v-if="showLink()"/>
     <SgusSection/>
   </div>
 </template>
@@ -8,8 +8,6 @@
 <script>
 import SgusHeader from './components/SgusHeader.vue';
 import SgusSection from './components/SgusSection.vue';
-import {mapGetters, mapMutations} from 'vuex';
-
 
 export default {
   name: 'App',
@@ -17,16 +15,11 @@ export default {
     SgusHeader,
     SgusSection
   },
-  computed: {
-    ...mapGetters({
-      currentComponent: 'getCurrentComponent'
-    })
-  },
   methods: {
-    ...mapMutations({
-      componentListUsers: 'setCurrentComponent'
-    })
-  }
+        showLink() {
+            return this.$route.path !== '/login';
+        }
+    }
 }
 </script>
 

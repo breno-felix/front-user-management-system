@@ -5,7 +5,7 @@
 
             <div class="row">
                 <h2>Lista de Cadastros</h2>
-                <button class="new-user" @click.prevent="$emit('component-register-users', 'SgusSectionRegisterUser')">Novo Cadastro ＋</button>
+                <router-link class="new-user" to="/register-user" tag="button">Novo Cadastro ＋</router-link>
             </div>
 
             <input type="text" id="search" name="search" placeholder="🔎 Pesquisar">
@@ -64,7 +64,9 @@
 </template>
 
 <script>
+export default {
 
+}
 </script>
 
 <style scoped>

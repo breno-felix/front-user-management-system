@@ -3,12 +3,11 @@
         <div class="container">
             <nav>
                 <ul>
-                    <li><a href="#">Gerenciamento</a></li>
+                    <li><a href="#" class="link">Gerenciamento</a></li>
                     <li><span>&gt;</span></li>
-                    <li :class="{ 'active': isLinkActive('SgusSectionListUser') }"><a href="#"
-                            @click.prevent="$emit('component-list-users', 'SgusSectionListUser')">Usuários</a></li>
-                    <li v-if="showLink"><span>&gt;</span></li>
-                    <li v-if="showLink" :class="{ 'active': isLinkActive('SgusSectionRegisterUser') }"><a href="#">Novo Cadastro</a></li>
+                    <router-link to="/" class="link">Usuários</router-link>
+                    <li v-if="showLink()"><span>&gt;</span></li>
+                    <router-link v-if="showLink()" to="/register-user" class="link">Novo Cadastro</router-link>
                 </ul>
             </nav>
 
@@ -21,33 +20,12 @@
 </template>
 
 <script>
-import {mapGetters} from 'vuex';
-
 export default {
-    data() {
-        return {
-            showLink: false
-        }
-    },
-    computed: {
-    ...mapGetters({
-      currentComponent: 'getCurrentComponent'
-    })
-    },
-    watch: {
-        currentComponent(value) {
-            if (value === 'SgusSectionRegisterUser') {
-                this.showLink = true
-            } else if (value === 'SgusSectionListUser') {
-                this.showLink = false
-            }
-        }
-    },
     methods: {
-    isLinkActive(route) {
-      return this.currentComponent === route;
+        showLink() {
+            return this.$route.path === '/register-user';
+        }
     },
-  },
 }
 </script>
 
@@ -97,7 +75,7 @@ nav ul {
     padding-left: 30px;
 }
 
-li a {
+.link {
     color: #71717A;
 }
 
@@ -105,7 +83,7 @@ ul {
     gap: 0.555vw
 }
 
-li.active a {
+.link-active {
     color: #4658AC;
 }
 </style>

@@ -3,7 +3,7 @@ import axios from 'axios'
 export default {
     state: {
         token: '',
-        isAuthenticated: false,
+        isAuthenticated: !!localStorage.getItem('token'),
     },
     getters: {
         getToken(state) {
@@ -17,24 +17,19 @@ export default {
         SET_TOKEN(state, token) {
             state.token = token
         },
-        SET_AUTHENTICATED(state, isAuthenticated) {
-            state.isAuthenticated = isAuthenticated
-        },
     },
     actions: {
         login({ commit }, credentials) {
             return new Promise((resolve, reject) => {
                 axios.post('http://localhost:3010/auth/login', credentials)
                     .then(response => {
-                        const token = response.data.token
+                        const token = response.data.accessToken
                         commit('SET_TOKEN', token)
-                        commit('SET_AUTHENTICATED', true)
                         localStorage.setItem('token', token)
                         resolve(response)
                     })
                     .catch(error => {
                         commit('SET_TOKEN', '')
-                        commit('SET_AUTHENTICATED', false)
                         localStorage.removeItem('token')
                         reject(error)
                     })

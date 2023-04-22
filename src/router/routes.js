@@ -12,13 +12,15 @@ export default new VueRouter ({
     linkExactActiveClass: 'link-active',
     routes: [{
         path: '/',
-        component: Home
+        component: Home,
+        name: 'home'
     }, {
         path: '/register-user',
         component: RegisterUser
     }, {
         path: '/login',
-        component: Login
+        component: Login,
+        name: 'login'
     }, {
         path: '*',
         component: NotFound

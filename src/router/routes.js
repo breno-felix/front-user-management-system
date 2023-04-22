@@ -8,15 +8,33 @@ import NotFound from "../components/Sgus404";
 
 Vue.use(VueRouter)
 
-export default new VueRouter ({
+export default new VueRouter({
     linkExactActiveClass: 'link-active',
     routes: [{
         path: '/',
         component: Home,
-        name: 'home'
+        name: 'home',
+        beforeEnter: (to, from, next) => {
+            console.log(localStorage.getItem('userRole'))
+            const role  = localStorage.getItem('userRole');
+            if (role !== 'super-admin') {
+                next({ name: 'login' });
+            } else {
+                next();
+            }
+        }
     }, {
         path: '/register-user',
-        component: RegisterUser
+        component: RegisterUser,
+        name: 'register-user',
+        beforeEnter: (to, from, next) => {
+            const role  = localStorage.getItem('userRole');
+            if (role !== 'super-admin') {
+                next({ name: 'login' });
+            } else {
+                next();
+            }
+        }
     }, {
         path: '/login',
         component: Login,

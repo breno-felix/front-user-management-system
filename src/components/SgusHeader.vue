@@ -12,19 +12,27 @@
             </nav>
 
             <div class="user-info">
-                <span>Breno Felix</span>
-                <span>brenodev.felix@gmail.com</span>
+                <span>{{ this.userName }}</span>
+                <span>{{ this.userEmail }}</span>
             </div>
         </div>
     </header>
 </template>
 
 <script>
+import { mapGetters } from 'vuex';
+
 export default {
     methods: {
         showLink() {
             return this.$route.path === '/register-user';
         }
+    },
+    computed: {
+        ...mapGetters({
+            userName: 'getUserName',
+            userEmail: 'getUserEmail',
+        })
     },
 }
 </script>

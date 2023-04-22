@@ -2,13 +2,13 @@
     <section>
         <h1>Novo Cadastro</h1>
         <div class="container">
-            <form action="#" method="post">
+            <form @submit.prevent="onSubmit">
                 <label for="user-name">Name</label>
-                <input type="text" id="user-name" name="user-name" placeholder="Usuário" required>
+                <input type="text" id="user-name" name="user-name" placeholder="Usuário" v-model="name" required>
                 <label for="user-email">Email</label>
-                <input type="text" id="user-email" name="user-email" placeholder="user@mail.com" required>
+                <input type="text" id="user-email" name="user-email" placeholder="user@mail.com" v-model="email" required>
                 <label for="user-role">Permissão</label>
-                <select id="user-role" name="user-role" required>
+                <select id="user-role" name="user-role" v-model="role" required>
                     <option value="">Selecione uma permissão</option>
                     <option value="super-admin">Super Admin</option>
                     <option value="admin">Admin</option>
@@ -16,7 +16,7 @@
                     <option value="guest">Visitante</option>
                 </select>
                 <label for="password">Senha</label>
-                <input type="password" id="password" name="password" placeholder="********" required>
+                <input type="password" id="password" name="password" placeholder="********" v-model="password" required>
                 <button type="submit">Criar</button>
             </form>
         </div>
@@ -24,8 +24,40 @@
 </template>
 
 <script>
-export default {
+import axios from 'axios'
 
+
+export default {
+    data() {
+        return {
+            name: '',
+            email: '',
+            role: '',
+            password: ''
+        }
+    },
+    methods: {
+        async onSubmit() {
+            const userData = {
+                name: this.name,
+                email: this.email,
+                role: this.role,
+                password: this.password
+            }
+            const token = localStorage.getItem('token')
+
+            try {
+                await axios.post('http://localhost:3010/users', userData, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                this.$router.push('/')
+            } catch (error) {
+                console.error(error)
+            }
+        }
+    }
 }
 </script>
 

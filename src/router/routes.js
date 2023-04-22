@@ -15,7 +15,6 @@ export default new VueRouter({
         component: Home,
         name: 'home',
         beforeEnter: (to, from, next) => {
-            console.log(localStorage.getItem('userRole'))
             const role  = localStorage.getItem('userRole');
             if (role !== 'super-admin') {
                 next({ name: 'login' });

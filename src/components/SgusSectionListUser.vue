@@ -31,7 +31,11 @@
                             <td>{{ isOnline(user._id) ? 'online' : 'offline' }}</td>
                             <td>{{ dayLog(user._id) }}</td>
                             <td>{{ hourLog(user._id) }}</td>
-                            <td><img src="../assets/Lixo.svg" alt="trash"></td>
+                            <td>
+                                <button class="trash" @click="removeUser(user._id)" >
+                                    <img src="../assets/Lixo.svg" alt="trash">
+                                </button>
+                            </td>
                         </tr>
                     </tbody>
 
@@ -82,7 +86,7 @@ export default {
                 this.sessions.map(session => {
                     if (session.userId === userId) {
                         const log = new Date(session.createdAt);
-                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24));
 
                         if (diffDays <= 1) {
                             on = true
@@ -98,7 +102,7 @@ export default {
                 this.sessions.map(session => {
                     if (session.userId === userId) {
                         const log = new Date(session.createdAt);
-                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24));
 
                         if (diffDays <= 1) {
                             day = new Date(log).toLocaleDateString()
@@ -114,15 +118,25 @@ export default {
                 this.sessions.map(session => {
                     if (session.userId === userId) {
                         const log = new Date(session.createdAt);
-                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24));
 
                         if (diffDays <= 1) {
-                        hour = new Date(session.createdAt).toLocaleTimeString()
+                            hour = new Date(session.createdAt).toLocaleTimeString()
                         }
                     }
                 })
             }
             return hour
+        },
+        removeUser(userId) {
+            console.log(userId)
+
+            this.$store.dispatch('removeUser', userId)
+                .then(() => {
+                    location.reload()
+                }).catch(error => {
+                    console.error(error)
+                })
         }
     }
 }
@@ -171,6 +185,12 @@ button.new-user {
     font-size: 14px;
     line-height: 17px;
     color: #FFFFFF;
+}
+
+button.trash {
+    border: none;
+    cursor: pointer;
+    background: none;
 }
 
 .row h2 {

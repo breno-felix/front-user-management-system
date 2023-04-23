@@ -27,12 +27,18 @@
                             <td>{{ user._id }}</td>
                             <td>{{ user.name }}</td>
                             <td>{{ user.email }}</td>
-                            <td>{{ user.role }}</td>
+                            <td>
+                                <select v-model="user.role" @change="selectedRole(user._id, $event.target.value)">
+                                    <option :value="user.role" :selected="true">{{ user.role }}</option>
+                                    <option v-for="role in roles" :value="role.name" :key="role.id">{{ role.name }}
+                                    </option>
+                                </select>
+                            </td>
                             <td>{{ isOnline(user._id) ? 'online' : 'offline' }}</td>
                             <td>{{ dayLog(user._id) }}</td>
                             <td>{{ hourLog(user._id) }}</td>
                             <td>
-                                <button class="trash" @click="removeUser(user._id)" >
+                                <button class="trash" @click="removeUser(user._id)">
                                     <img src="../assets/Lixo.svg" alt="trash">
                                 </button>
                             </td>
@@ -78,6 +84,14 @@ export default {
         ...mapGetters({
             users: 'getUsers',
         }),
+        roles() {
+            return [
+                { id: 1, name: 'super-admin' },
+                { id: 2, name: 'admin' },
+                { id: 3, name: 'user' },
+                { id: 4, name: 'guest' },
+            ]
+        }
     },
     methods: {
         isOnline(userId) {
@@ -129,9 +143,17 @@ export default {
             return hour
         },
         removeUser(userId) {
-            console.log(userId)
-
             this.$store.dispatch('removeUser', userId)
+                .then(() => {
+                    location.reload()
+                }).catch(error => {
+                    console.error(error)
+                })
+        },
+        selectedRole(userId, role) {
+            console.log(`${userId} - ${role}`)
+
+            this.$store.dispatch('updateRoleUser', { userId, role })
                 .then(() => {
                     location.reload()
                 }).catch(error => {

@@ -8,7 +8,7 @@ import NotFound from "../components/Sgus404";
 
 Vue.use(VueRouter)
 
-export default new VueRouter({
+const router = new VueRouter({
     linkExactActiveClass: 'link-active',
     routes: [{
         path: '/',
@@ -43,3 +43,13 @@ export default new VueRouter({
         component: NotFound
     }]
 })
+
+router.beforeEach((to, from, next) => {
+    if (to.name !== 'login' && !localStorage.getItem('token')) {
+      next({ name: 'login' });
+    } else {
+      next();
+    }
+  });
+
+export default router

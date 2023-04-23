@@ -26,7 +26,6 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex';
 
 export default {
     data() {
@@ -51,10 +50,12 @@ export default {
         }
     },
     computed: {
-        ...mapGetters({
-            userName: 'getUserName',
-            userEmail: 'getUserEmail',
-        })
+        userName(){
+            return localStorage.getItem('userName')
+        },
+        userEmail(){
+            return localStorage.getItem('userEmail')
+        }
     },
 }
 </script>

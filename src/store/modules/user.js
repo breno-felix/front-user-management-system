@@ -22,7 +22,7 @@ export default {
         async findAllUsers({ commit }) {
             const token = localStorage.getItem('token')
             try {
-                const {data: users} = await axios.get('http://localhost:3010/users', {
+                const { data: users } = await axios.get('http://localhost:3010/users', {
                     headers: {
                         'Authorization': `Bearer ${token}`
                     }
@@ -44,6 +44,20 @@ export default {
             } catch (error) {
                 console.log(error)
             }
-        }
+        },
+        async updateRoleUser({ commit }, { userId, role }) {
+            const token = localStorage.getItem('token')
+            try {
+                await axios.patch(`http://localhost:3010/users/${userId}`, { role }, {
+                    headers: {
+                        'Authorization': `Bearer ${token}`
+                    }
+                })
+                commit('SET_MESSAGE', `the userId: ${userId} now has role: ${role}.`)
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
     }
 }

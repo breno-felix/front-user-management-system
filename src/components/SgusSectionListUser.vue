@@ -23,34 +23,14 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
-                            <td>6169817c82a3174b4f4f4c2d</td>
-                            <td>João Carlos da Silva</td>
-                            <td>joao@mail.com</td>
-                            <td>admin</td>
-                            <td>ativo</td>
-                            <td>20/04/2023</td>
-                            <td>10:30</td>
-                            <td><img src="../assets/Lixo.svg" alt="trash"></td>
-                        </tr>
-                        <tr>
-                            <td>6169817c82a3174b4f4f4c2d</td>
-                            <td>Maria</td>
-                            <td>maria@mail.com</td>
-                            <td>user</td>
-                            <td>inativo</td>
-                            <td>19/04/2023</td>
-                            <td>15:45</td>
-                            <td><img src="../assets/Lixo.svg" alt="trash"></td>
-                        </tr>
-                        <tr>
-                            <td>6169817c82a3174b4f4f4c2d</td>
-                            <td>José</td>
-                            <td>jose@mail.com</td>
-                            <td>admin</td>
-                            <td>ativo</td>
-                            <td>18/04/2023</td>
-                            <td>08:20</td>
+                        <tr v-for="(user, index) in this.users" :key="index">
+                            <td>{{ user._id }}</td>
+                            <td>{{ user.name }}</td>
+                            <td>{{ user.email }}</td>
+                            <td>{{ user.role }}</td>
+                            <td>{{ isOnline(user._id) ? 'online' : 'offline' }}</td>
+                            <td>{{ dayLog(user._id) }}</td>
+                            <td>{{ hourLog(user._id) }}</td>
                             <td><img src="../assets/Lixo.svg" alt="trash"></td>
                         </tr>
                     </tbody>
@@ -64,8 +44,87 @@
 </template>
 
 <script>
-export default {
+import { mapGetters } from 'vuex';
+import axios from 'axios'
 
+export default {
+    async beforeCreate() {
+        try {
+            await this.$store.dispatch('findAllUsers')
+
+            const token = localStorage.getItem('token');
+            const { data: sessions } = await axios.get(`http://localhost:3010/sessions`, {
+                headers: {
+                    'Authorization': `Bearer ${token}`
+                }
+            })
+            this.sessions = sessions
+            this.usersOnline = sessions.map(session => session.userId)
+        } catch (error) {
+            console.error(error)
+        }
+    },
+    data() {
+        return {
+            sessions: [],
+            usersOnline: [],
+        }
+    },
+    computed: {
+        ...mapGetters({
+            users: 'getUsers',
+        }),
+    },
+    methods: {
+        isOnline(userId) {
+            let on = false
+            if (this.usersOnline.includes(userId)) {
+                this.sessions.map(session => {
+                    if (session.userId === userId) {
+                        const log = new Date(session.createdAt);
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+
+                        if (diffDays <= 1) {
+                            on = true
+                        }
+                    }
+                })
+            }
+            return on
+        },
+        dayLog(userId) {
+            let day = '-'
+            if (this.usersOnline.includes(userId)) {
+                this.sessions.map(session => {
+                    if (session.userId === userId) {
+                        const log = new Date(session.createdAt);
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+
+                        if (diffDays <= 1) {
+                            day = new Date(log).toLocaleDateString()
+                        }
+                    }
+                })
+            }
+            return day
+        },
+        hourLog(userId) {
+            let hour = '-'
+            if (this.usersOnline.includes(userId)) {
+                this.sessions.map(session => {
+                    if (session.userId === userId) {
+                        const log = new Date(session.createdAt);
+                        const diffDays = ((new Date() - log) / (1000 * 60 * 60 * 24)); 
+
+                        if (diffDays <= 1) {
+                        hour = new Date(session.createdAt).toLocaleTimeString()
+                        }
+                    }
+                })
+            }
+            return hour
+        }
+    }
 }
 </script>
 
@@ -83,6 +142,7 @@ h1 {
     font-size: 32px;
     line-height: 39px;
 }
+
 .container {
     width: 88.8vw;
     min-height: 67vh;

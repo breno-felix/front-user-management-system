@@ -3,11 +3,11 @@
         <div class="container">
             <h1> SGUS </h1>
             <h2> Sistema Gerenciador de Usuários</h2>
-            <form action="#" method="post">
-                <label for="username">Usuário:</label>
-                <input type="text" id="username" name="username" required>
+            <form @submit.prevent="onSubmit">
+                <label for="email">Usuário:</label>
+                <input type="text" id="email" name="email" placeholder="user@mail.com" v-model="email" required>
                 <label for="password">Senha:</label>
-                <input type="password" id="password" name="password" required>
+                <input type="password" id="password" name="password" placeholder="********" v-model="password" required>
                 <p class="forgot-password"><a href="#">Esqueceu sua senha?</a></p>
                 <button type="submit">Acessar →</button>
             </form>
@@ -17,7 +17,26 @@
 
 <script>
 export default {
-
+    data() {
+        return {
+            email: '',
+            password: ''
+        }
+    },
+    methods: {
+        onSubmit() {
+            const credentials = {
+                email: this.email,
+                password: this.password
+            }
+            this.$store.dispatch('login', credentials)
+                .then(() => {
+                    this.$router.push('/')
+                }).catch(error => {
+                    console.error(error)
+                })
+        }
+    }
 }
 </script>
 

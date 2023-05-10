@@ -46,7 +46,7 @@
                     </tbody>
 
                 </table>
-                <p class="counter">5 Usuários</p>
+                <p class="counter">{{ countUser }} Usuários</p>
 
             </div>
         </div>
@@ -106,6 +106,9 @@ export default {
                 { id: 3, name: 'user' },
                 { id: 4, name: 'guest' },
             ]
+        },
+        countUser() {
+            return this.users.length
         }
     },
     methods: {
